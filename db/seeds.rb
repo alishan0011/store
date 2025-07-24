@@ -1,9 +1,16 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+User.create!(email: "alishan431@gmail.com") do |user|
+  user.name = "Ali Shan"
+  user.father_name = "Riaz Ahmed"
+  user.cell_no = "03330222960"
+  user.city = "Lahore"
+  user.country = "Pakistan"
+  user.password = "password123"
+  user.password_confirmation = "password123"
+  user.role = "admin"
+  user.approved = true
+  user.image.attach(
+    io: File.open(Rails.root.join("app/assets/images/default-avatar.png")),
+    filename: "default-avatar.png",
+    content_type: "image/png"
+  )
+end
