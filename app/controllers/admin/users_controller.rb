@@ -19,6 +19,15 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_path, notice: 'User deleted successfully.'
   end
 
+  def revoke
+	  @user = User.find(params[:id])
+	  if @user.update(approved: false)
+	    redirect_to admin_users_path, notice: "User approval revoked."
+	  else
+	    redirect_to admin_users_path, alert: "Already revoked. Failed to revoke approval."
+	  end
+  end
+
   private
 
   def verify_admin

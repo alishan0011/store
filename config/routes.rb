@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :destroy] do
       member do
         patch :approve
+        patch :revoke
       end
     end
   end

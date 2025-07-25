@@ -1,0 +1,56 @@
+<div class="max-w-5xl mx-auto mt-10 p-4 sm:p-6 bg-white rounded-2xl shadow-lg">
+  <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center sm:text-left">
+    List of Pending Users
+  </h2>
+
+  <% if @users.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left border border-gray-200 rounded-md">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs sm:text-sm tracking-wider">
+          <tr>
+            <th class="px-3 py-3 whitespace-nowrap">Name</th>
+            <th class="px-3 py-3 whitespace-nowrap">Email</th>
+            <th class="px-3 py-3 whitespace-nowrap">Status</th>
+            <th class="px-3 py-3 whitespace-nowrap">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 divide-y divide-gray-200">
+          <% @users.each do |user| %>
+            <% unless user.approved? %>
+              <tr class="hover:bg-gray-50 transition duration-150">
+                <td class="px-3 py-2 font-medium whitespace-nowrap"><%= user.name %></td>
+                <td class="px-3 py-2 whitespace-nowrap"><%= user.email %></td>
+                <td class="px-3 py-2 whitespace-nowrap">
+                  <span class="inline-flex items-center px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded">Pending</span>
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">
+                  <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                    <!-- Approve Button -->
+                    <%= button_to approve_admin_user_path(user), method: :patch, data: { confirm: 'Approve this user?' }, class: "inline-flex items-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow transition" do %>
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Approve
+                    <% end %>
+
+                    <!-- Delete Button -->
+                    <%= button_to admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: "inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow transition" do %>
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Delete
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="p-4 text-center text-gray-600 text-sm">
+      No pending users at the moment.
+    </div>
+  <% end %>
+</div>
