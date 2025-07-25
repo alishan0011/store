@@ -11,6 +11,10 @@ class User < ApplicationRecord
    role == 'admin'
   end
 
+  has_many :videos
+  has_many :category_accesses
+  has_many :categories, through: :category_accesses
+
   validates :name, presence: true
   validates :father_name, presence: true
   validates :cell_no, presence: true

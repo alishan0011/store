@@ -4,7 +4,8 @@ class Admin::UsersController < ApplicationController
   before_action :verify_admin
 
   def index
-    @users = User.where(role: 'user')
+    @users = User.all
+    @categories = Category.all 
   end
 
   def approve
@@ -28,6 +29,19 @@ class Admin::UsersController < ApplicationController
 	  end
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_to admin_users_path, notice: "User updated"
+    else
+      render :edit
+    end
+  end
+
   private
 
   def verify_admin
@@ -35,5 +49,10 @@ class Admin::UsersController < ApplicationController
       redirect_to root_path, alert: "Access denied."
     end
   end
+
+  def user_params
+    params.require(:user).permit(:name, :email, category_ids: []) # Example permitted attributes
+  end
+
 
 end
