@@ -21,30 +21,25 @@
                 <td class="px-3 py-2 font-medium whitespace-nowrap"><%= user.name %></td>
                 <td class="px-3 py-2 whitespace-nowrap"><%= user.email %></td>
                 <td class="px-3 py-2 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded">Pending</span>
+                  <span class="inline-flex items-center px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded">
+                    Pending
+                  </span>
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap">
                   <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                     <!-- Approve Button -->
-                    <%= button_to approve_admin_user_path(user), method: :patch,
-                          form: { action: approve_admin_user_path(user) + "#requests" },
+                    <%= button_to approve_admin_user_path(user),
+                          method: :patch,
+                          form: {
+                            action: approve_admin_user_path(user) + "#requests",
+                            params: { tab: 'requests' }
+                          },
                           data: { confirm: 'Approve this user?' },
                           class: "inline-flex items-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow transition" do %>
                       <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       Approve
-                    <% end %>
-
-                    <!-- Delete Button -->
-                    <%= button_to admin_user_path(user), method: :delete,
-                          form: { action: admin_user_path(user) + "#requests" },
-                          data: { confirm: 'Are you sure?' },
-                          class: "inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow transition" do %>
-                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      Delete
                     <% end %>
                   </div>
                 </td>

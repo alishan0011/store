@@ -1,10 +1,11 @@
-<% content_for :title, "Editing category" %>
+<turbo-frame id="modal">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl p-6 relative">
+      <button type="button" onclick="document.getElementById('modal').innerHTML = ''"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing category</h1>
-
-  <%= render "form", admin_category: @admin_category %>
-
-  <%= link_to "Show this category", @admin_category, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to categories", admin_categories_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-</div>
+      <h2 class="text-lg font-semibold mb-4">Edit Category</h2>
+      <%= render "form", category: @admin_category %>
+    </div>
+  </div>
+</turbo-frame>

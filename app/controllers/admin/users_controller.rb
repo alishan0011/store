@@ -4,28 +4,28 @@ class Admin::UsersController < ApplicationController
   before_action :verify_admin
 
   def index
-    @users = User.all
+    @users = User.where(role: "user")
     @categories = Category.all 
   end
 
   def approve
     user = User.find(params[:id])
     user.update(approved: true)
-    redirect_to admin_users_path, notice: 'User approved successfully.'
+    redirect_to admin_users_path(anchor: 'requests'), notice: 'User approved successfully.'
   end
 
   def destroy
     user = User.find(params[:id])
     user.destroy
-    redirect_to admin_users_path, notice: 'User deleted successfully.'
+    redirect_to admin_users_path(anchor: 'users'), notice: 'User deleted successfully.'
   end
 
   def revoke
 	  @user = User.find(params[:id])
 	  if @user.update(approved: false)
-	    redirect_to admin_users_path, notice: "User approval revoked."
+	    redirect_to admin_users_path(anchor: 'users'), notice: "User approval revoked."
 	  else
-	    redirect_to admin_users_path, alert: "Already revoked. Failed to revoke approval."
+	    redirect_to admin_users_path(anchor: 'users'), alert: "Already revoked. Failed to revoke approval."
 	  end
   end
 

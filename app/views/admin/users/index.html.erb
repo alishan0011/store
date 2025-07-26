@@ -9,45 +9,36 @@
   <!-- Navigation Tabs -->
   <div class="border-b border-gray-200 mb-6 overflow-x-auto">
     <nav class="flex space-x-4 sm:space-x-6 min-w-[460px] sm:min-w-0">
-      <button onclick="showTab('users', this)" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium text-gray-500 hover:text-blue-600 hover:border-blue-600 transition-all">Approved Users</button>
-      <button onclick="showTab('requests', this)" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium text-gray-500 hover:text-blue-600 hover:border-blue-600 transition-all">Pending Requests</button>
-      <button onclick="showTab('categories', this)" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium text-gray-500 hover:text-blue-600 hover:border-blue-600 transition-all">Categories</button>
-      <button onclick="showTab('videos', this)" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium text-gray-500 hover:text-blue-600 hover:border-blue-600 transition-all">Video Upload</button>
-      <button onclick="showTab('announcements', this)" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium text-gray-500 hover:text-blue-600 hover:border-blue-600 transition-all">Announcements</button>
+      <button data-tab="users" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium transition-all">Approved Users</button>
+      <button data-tab="requests" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium transition-all">Pending Requests</button>
+      <button data-tab="categories" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium transition-all">Categories</button>
+      <button data-tab="videos" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium transition-all">Video Upload</button>
+      <button data-tab="announcements" class="tab-btn text-sm border-b-2 px-3 py-2 font-medium transition-all">Announcements</button>
     </nav>
   </div>
 
   <!-- Content Sections -->
   <div class="mt-4 space-y-10">
-
-    <!-- Approved Users -->
     <div id="users" class="tab-content">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Approved Users</h2>
       <%= render 'admin/users/approved_users' %>
     </div>
 
-    <!-- Pending Requests -->
     <div id="requests" class="tab-content hidden">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Pending User Requests</h2>
       <%= render 'admin/users/pending_users' %>
     </div>
 
-
-    <!-- Pending Requests -->
     <div id="categories" class="tab-content hidden">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">List of Categories</h2>
       <%= render 'admin/categories/index' %>
     </div>
 
-
-
-    <!-- Video Upload -->
     <div id="videos" class="tab-content hidden">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Upload Educational Videos</h2>
       <%#= render 'admin/videos/form' %>
     </div>
 
-    <!-- Announcements -->
     <div id="announcements" class="tab-content hidden">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Make Announcements</h2>
       <%#= render 'admin/announcements/form' %>
@@ -55,54 +46,47 @@
   </div>
 </div>
 
-
-<!-- JS: showTab must be defined BEFORE DOMContentLoaded -->
+<!-- Working JS for Tab Switching -->
 <script>
-  function showTab(tabId, btn) {
+  function showTab(tabId) {
+    // Hide all content
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-    document.querySelectorAll('.tab-btn').forEach(button => {
-      button.classList.remove('border-blue-600', 'text-blue-600');
-      button.classList.add('text-gray-500');
+
+    // Reset tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('border-blue-600', 'text-blue-600');
+      btn.classList.add('text-gray-500');
     });
 
+    // Show selected tab content
     const activeTab = document.getElementById(tabId);
-    if (activeTab) {
-      activeTab.classList.remove('hidden');
+    if (activeTab) activeTab.classList.remove('hidden');
+
+    // Highlight selected tab button
+    const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('border-blue-600', 'text-blue-600');
+      activeBtn.classList.remove('text-gray-500');
     }
 
-    if (btn) {
-      btn.classList.add('border-blue-600', 'text-blue-600');
-      btn.classList.remove('text-gray-500');
-    }
+    // ✅ Prevent scroll by updating hash without jump
+    history.replaceState(null, null, `#${tabId}`);
   }
-</script>
 
-<!-- DOM Ready -->
-<script>
   document.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash.substring(1);
     const validTabs = ["users", "requests", "categories", "videos", "announcements"];
-    const tabToShow = validTabs.includes(hash) ? hash : "users";
+    const currentTab = validTabs.includes(location.hash.slice(1)) ? location.hash.slice(1) : "users";
 
-    const tabButtons = document.querySelectorAll(".tab-btn");
-    const targetBtn = Array.from(tabButtons).find(btn =>
-      btn.getAttribute("onclick")?.includes(`'${tabToShow}'`)
-    );
+    // Attach event listeners
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.getAttribute('data-tab');
+        if (tab) showTab(tab);
+      });
+    });
 
-    if (targetBtn) {
-      showTab(tabToShow, targetBtn);
-    } else {
-      showTab("users", tabButtons[0]);
-    }
+    // Show initial tab based on hash without scroll
+    showTab(currentTab);
   });
 </script>
-
-
-
-
-
-
-
-
-
 
