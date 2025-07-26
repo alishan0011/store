@@ -7,7 +7,10 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
-    resources :users, only: [:index, :destroy] do
+    get 'dashboard', to: 'users#index'  # 👈 This is your dashboard page
+    resources :categories
+    resources :category_accesses, only: [:create, :destroy]
+    resources :users, only: [:index, :destroy, :create, :update] do
       member do
         patch :approve
         patch :revoke
@@ -15,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
+  
   resources :videos
   resources :announcements
   
